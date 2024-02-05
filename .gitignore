@@ -1,0 +1,4 @@
+nvim-treesitter/
+nvim-ts-autotag/
+
+*.md
