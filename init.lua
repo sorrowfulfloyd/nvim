@@ -27,7 +27,7 @@ Kickstart Guide:
 I have left several `:help X` comments throughout the init.lua
 You should run that command and read that help section for more information.
 
-In addition, I have some `NOTE:` items throughout the file.
+In addition, I have some `--NOTE: items throughout the file.
 These are for you, the reader to help understand what is happening. Feel free to delete
 them once you know what you're doing, but they should serve as a guide for when you
 are first encountering a few different constructs in your nvim config.
@@ -37,12 +37,9 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now :)
 --]]
--- disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 
 -- set termguicolors to enable highlight groups
-vim.opt.termguicolors = true
+
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -74,13 +71,7 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
-  'm4xshen/autoclose.nvim',
-  {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
-  },
 
-  'ThePrimeagen/vim-be-good',
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -234,20 +225,6 @@ require('lazy').setup({
   }, ]]
 
   {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
-
-  {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
@@ -359,50 +336,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
--- My custom settings
-vim.opt.guicursor = ""
-vim.opt.nu = true
-vim.opt.relativenumber = true
-
-vim.opt.autochdir = true
-
-vim.opt.smartindent = true
-vim.opt.wrap = false
-
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
-
-vim.opt.scrolloff = 10
-vim.opt.signcolumn = "yes"
-
-vim.opt.updatetime = 50
-
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-
--- autoformat on :w
-vim.api.nvim_create_autocmd("BufWritePre", {
-  buffer = buffer,
-  callback = function()
-    vim.lsp.buf.format { async = false }
-  end
-})
-
--- my custom keymaps
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-
-vim.api.nvim_set_keymap('n', '<C-h>', '<Nop>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<Nop>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
-
-vim.api.nvim_set_keymap('n', '<leader>x', ':NvimTreeOpen<CR>', { noremap = true, silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -640,16 +573,11 @@ require('which-key').register({
   ['<leader>h'] = { 'Git [H]unk' },
 }, { mode = 'v' })
 
--- my custom whichkey keymaps
-require('which-key').register {
-  ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' }
-}
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
 require('mason-lspconfig').setup()
 
-require("autoclose").setup()
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -691,46 +619,6 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
 
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = '' },
-    section_separators = { left = '', right = '' },
-    disabled_filetypes = {
-      statusline = {},
-      winbar = {},
-    },
-    ignore_focus = {},
-    always_divide_middle = true,
-    globalstatus = false,
-    refresh = {
-      statusline = 1000,
-      tabline = 1000,
-      winbar = 1000,
-    }
-  },
-  sections = {
-    lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diff', 'diagnostics' },
-    lualine_c = { 'filename' },
-    lualine_x = { 'encoding', 'fileformat', 'filetype' },
-    lualine_y = { 'progress' },
-    lualine_z = { 'location' }
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { 'filename' },
-    lualine_x = { 'location' },
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  winbar = {},
-  inactive_winbar = {},
-  extensions = {}
-}
 
 mason_lspconfig.setup_handlers {
   function(server_name)
