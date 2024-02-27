@@ -46,6 +46,5 @@ vim.opt.termguicolors = true
 --[[ require('which-key').register {
   ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' },
 } ]]
-
 return {
 }
