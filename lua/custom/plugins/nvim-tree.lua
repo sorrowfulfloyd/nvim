@@ -1,7 +1,7 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.keymap.set('n', '<leader>x', ':NvimTreeOpen<CR>', { desc = 'Open E[x]plorer' })
+vim.keymap.set('n', '<leader>x', ':NvimTreeToggle<CR>', { desc = 'Open E[x]plorer' })
 
 return {
   "nvim-tree/nvim-tree.lua",
