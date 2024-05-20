@@ -1,8 +1,13 @@
 return {
-  'catppuccin/nvim',
+  'rebelot/kanagawa.nvim',
   lazy = false,
   priority = 1000,
   config = function()
-    vim.cmd.colorscheme 'catppuccin'
+    require('kanagawa').setup {
+      background = {
+        dark = 'wave',
+      }
+    }
+    vim.cmd.colorscheme 'kanagawa'
   end,
 }
