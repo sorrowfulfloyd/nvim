@@ -1,4 +1,4 @@
-local codeium = require "custom.plugins.codeium"
+local codeium = require("custom.plugins.codeium")
 -- My custom settings
 vim.opt.guicursor = ""
 vim.opt.nu = true
@@ -33,13 +33,12 @@ vim.opt.expandtab = true
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
-vim.api.nvim_set_keymap('n', '<C-h>', '<Nop>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<Nop>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
-
+vim.api.nvim_set_keymap("n", "<C-h>", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-k>", "<Nop>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
 
 vim.opt.termguicolors = true
 
@@ -47,5 +46,4 @@ vim.opt.termguicolors = true
 --[[ require('which-key').register {
   ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' },
 } ]]
-return {
-}
+return {}
