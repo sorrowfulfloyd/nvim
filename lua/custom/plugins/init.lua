@@ -22,12 +22,12 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 -- autoformat on :w
-vim.api.nvim_create_autocmd("BufWritePre", {
-  buffer = buffer,
-  callback = function()
-    vim.lsp.buf.format { async = false }
-  end
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   buffer = buffer,
+--   callback = function()
+--     vim.lsp.buf.format { async = false }
+--   end
+-- })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
