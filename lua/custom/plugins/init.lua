@@ -1,4 +1,3 @@
-local codeium = require("custom.plugins.codeium")
 -- My custom settings
 vim.opt.guicursor = ""
 vim.opt.nu = true
