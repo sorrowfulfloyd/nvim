@@ -207,7 +207,7 @@ require("lazy").setup({
 				map("n", h_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
 				map("n", h_prefix .. "p", gitsigns.preview_hunk, { desc = "Preview hunk" })
 				map("n", h_prefix .. "b", function()
-					gitsigns.blame_line({ full = true })
+					gitsigns.blame_line()
 				end, { desc = "Blame line" })
 				map("n", h_prefix .. "t", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
 				map("n", h_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
@@ -218,17 +218,6 @@ require("lazy").setup({
 
 				-- Text object
 				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
-
-				-- Additional Git-related mappings under <leader>g
-				local g_prefix = "<leader>g"
-				map("n", g_prefix .. "s", gitsigns.stage_hunk, { desc = "Stage hunk" })
-				map("n", g_prefix .. "u", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
-				map("n", g_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
-				map("n", g_prefix .. "p", gitsigns.preview_hunk, { desc = "Preview hunk" })
-				map("n", g_prefix .. "B", function()
-					gitsigns.blame_line({ full = true })
-				end, { desc = "Blame line" })
-				map("n", g_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
 			end,
 			signs = {
 				add = { text = "+" },
@@ -270,7 +259,7 @@ require("lazy").setup({
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-				{ "<leader>g", group = "Git Actions", mode = { "n", "v" } },
+				{ "<leader>g", group = "Git Search", mode = { "n", "v" } },
 			})
 			-- visual mode
 			-- require("which-key").add({
