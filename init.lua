@@ -159,9 +159,77 @@ require("lazy").setup({
 	--    require('gitsigns').setup({ ... })
 	--
 	-- See `:help gitsigns` to understand what the configuration keys do
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
+	-- Adds git related signs to the gutter, as well as utilities for managing changes
+	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
+			on_attach = function(bufnr)
+				local gitsigns = require("gitsigns")
+
+				-- Utility function to map keys
+				local function map(mode, lhs, rhs, opts)
+					opts = opts or {}
+					opts.buffer = bufnr
+					vim.keymap.set(mode, lhs, rhs, opts)
+				end
+
+				-- Group all hunk-related mappings under <leader>h
+				local h_prefix = "<leader>h"
+
+				-- Navigation
+				map("n", h_prefix .. "n", function()
+					if vim.wo.diff then
+						vim.cmd("normal! ]c")
+					else
+						gitsigns.next_hunk()
+					end
+				end, { desc = "Next hunk" })
+
+				map("n", h_prefix .. "p", function()
+					if vim.wo.diff then
+						vim.cmd("normal! [c")
+					else
+						gitsigns.prev_hunk()
+					end
+				end, { desc = "Previous hunk" })
+
+				-- Actions
+				map("n", h_prefix .. "s", gitsigns.stage_hunk, { desc = "Stage hunk" })
+				map("n", h_prefix .. "r", gitsigns.reset_hunk, { desc = "Reset hunk" })
+				map("v", h_prefix .. "s", function()
+					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, { desc = "Stage selected hunk" })
+				map("v", h_prefix .. "r", function()
+					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, { desc = "Reset selected hunk" })
+				map("n", h_prefix .. "S", gitsigns.stage_buffer, { desc = "Stage buffer" })
+				map("n", h_prefix .. "u", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
+				map("n", h_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
+				map("n", h_prefix .. "p", gitsigns.preview_hunk, { desc = "Preview hunk" })
+				map("n", h_prefix .. "b", function()
+					gitsigns.blame_line({ full = true })
+				end, { desc = "Blame line" })
+				map("n", h_prefix .. "t", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
+				map("n", h_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
+				map("n", h_prefix .. "D", function()
+					gitsigns.diffthis("~")
+				end, { desc = "Diff this with previous commit" })
+				map("n", h_prefix .. "x", gitsigns.toggle_deleted, { desc = "Toggle deleted" })
+
+				-- Text object
+				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+
+				-- Additional Git-related mappings under <leader>g
+				local g_prefix = "<leader>g"
+				map("n", g_prefix .. "s", gitsigns.stage_hunk, { desc = "Stage hunk" })
+				map("n", g_prefix .. "u", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
+				map("n", g_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
+				map("n", g_prefix .. "p", gitsigns.preview_hunk, { desc = "Preview hunk" })
+				map("n", g_prefix .. "B", function()
+					gitsigns.blame_line({ full = true })
+				end, { desc = "Blame line" })
+				map("n", g_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
+			end,
 			signs = {
 				add = { text = "+" },
 				change = { text = "~" },
@@ -202,6 +270,7 @@ require("lazy").setup({
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>g", group = "Git Actions", mode = { "n", "v" } },
 			})
 			-- visual mode
 			-- require("which-key").add({
