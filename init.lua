@@ -209,6 +209,9 @@ require("lazy").setup({
 				map("n", h_prefix .. "b", function()
 					gitsigns.blame_line()
 				end, { desc = "Blame line" })
+				map("n", h_prefix .. "B", function()
+					gitsigns.blame()
+				end, { desc = "Blame" })
 				map("n", h_prefix .. "t", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
 				map("n", h_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
 				map("n", h_prefix .. "D", function()
@@ -628,14 +631,14 @@ require("lazy").setup({
 				}
 			end,
 			formatters_by_ft = {
-				lua = { "stylua" },
+				lua = { "stylua", "luafmt", stop_after_first = true },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
-				javascript = { { "prettierd", "prettier" } },
-				javascriptreact = { { "prettierd", "prettier" } },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
