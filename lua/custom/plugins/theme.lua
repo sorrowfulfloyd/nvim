@@ -12,16 +12,29 @@
 	end,
 } ]]
 
+-- return {
+-- 	"EdenEast/nightfox.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		require("nightfox").setup({
+-- 			-- background = {
+-- 			-- 	dark = "carbonfox",
+-- 			-- },
+-- 		})
+-- 		vim.cmd.colorscheme("carbonfox")
+-- 	end,
+-- }
+--
 return {
-	"EdenEast/nightfox.nvim",
+	"Mofiqul/vscode.nvim",
 	lazy = false,
 	priority = 1000,
 	config = function()
-		require("nightfox").setup({
-			-- background = {
-			-- 	dark = "carbonfox",
-			-- },
+		require("vscode").setup({
+			italic_comments = true,
+			disable_nvimtree_bg = true,
 		})
-		vim.cmd.colorscheme("carbonfox")
+		vim.cmd.colorscheme("vscode")
 	end,
 }

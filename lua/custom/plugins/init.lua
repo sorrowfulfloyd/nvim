@@ -93,7 +93,17 @@ local function telescope_live_grep_open_files()
 	})
 end
 
-vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Git [F]iles" })
+vim.keymap.set("n", "<leader>gs", require("telescope.builtin").git_status, { desc = "Git [S]tatus" })
+vim.keymap.set("n", "<leader>gc", require("telescope.builtin").git_commits, { desc = "Git [C]ommits" })
+vim.keymap.set("n", "<leader>gb", require("telescope.builtin").git_branches, { desc = "Git [B]ranches" })
+vim.keymap.set(
+	"n",
+	"<leader>gC",
+	require("telescope.builtin").git_bcommits,
+	{ desc = "Git [C]ommits (for current buffer)" }
+)
+vim.keymap.set("n", "<leader>gh", require("telescope.builtin").git_stash, { desc = "Git Stas[h]" })
 vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 
 vim.opt.termguicolors = true
