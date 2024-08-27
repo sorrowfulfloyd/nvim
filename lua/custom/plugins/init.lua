@@ -69,6 +69,21 @@ local function live_grep_git_root()
 	if git_root then
 		require("telescope.builtin").live_grep({
 			search_dirs = { git_root },
+			additional_args = function(opts)
+				return {
+					"--glob=!.git/",
+					"--glob=!.next/",
+					"--glob=!node_modules/",
+					"--glob=!dist/",
+					"--glob=!build/",
+					"--glob=!public/",
+					"--glob=!coverage/",
+					"--glob=!vendor/",
+					"--glob=!target/",
+					"--glob=!__pycache__/",
+					"--glob=!*.lock",
+				}
+			end,
 		})
 	end
 end
