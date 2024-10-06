@@ -205,7 +205,7 @@ require("lazy").setup({
 				map("n", h_prefix .. "S", gitsigns.stage_buffer, { desc = "Stage buffer" })
 				map("n", h_prefix .. "u", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
 				map("n", h_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
-				map("n", h_prefix .. "p", gitsigns.preview_hunk, { desc = "Preview hunk" })
+				map("n", h_prefix .. "P", gitsigns.preview_hunk, { desc = "Preview hunk" })
 				map("n", h_prefix .. "b", function()
 					gitsigns.blame_line()
 				end, { desc = "Blame line" })
