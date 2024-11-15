@@ -34,12 +34,10 @@ vim.api.nvim_exec('language en_US')
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
-vim.api.nvim_set_keymap("n", "<C-h>", "<Nop>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-k>", "<Nop>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
@@ -71,6 +69,21 @@ local function live_grep_git_root()
 	if git_root then
 		require("telescope.builtin").live_grep({
 			search_dirs = { git_root },
+			additional_args = function(opts)
+				return {
+					"--glob=!.git/",
+					"--glob=!.next/",
+					"--glob=!node_modules/",
+					"--glob=!dist/",
+					"--glob=!build/",
+					"--glob=!public/",
+					"--glob=!coverage/",
+					"--glob=!vendor/",
+					"--glob=!target/",
+					"--glob=!__pycache__/",
+					"--glob=!*.lock",
+				}
+			end,
 		})
 	end
 end
@@ -95,7 +108,17 @@ local function telescope_live_grep_open_files()
 	})
 end
 
-vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Git [F]iles" })
+vim.keymap.set("n", "<leader>gs", require("telescope.builtin").git_status, { desc = "Git [S]tatus" })
+vim.keymap.set("n", "<leader>gc", require("telescope.builtin").git_commits, { desc = "Git [C]ommits" })
+vim.keymap.set("n", "<leader>gb", require("telescope.builtin").git_branches, { desc = "Git [B]ranches" })
+vim.keymap.set(
+	"n",
+	"<leader>gC",
+	require("telescope.builtin").git_bcommits,
+	{ desc = "Git [C]ommits (for current buffer)" }
+)
+vim.keymap.set("n", "<leader>gh", require("telescope.builtin").git_stash, { desc = "Git Stas[h]" })
 vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 
 vim.opt.termguicolors = true
@@ -104,4 +127,5 @@ vim.opt.termguicolors = true
 --[[ require('which-key').register {
   ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' },
 } ]]
+vim.filetype.add({ extension = { templ = "templ" } })
 return {}

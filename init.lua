@@ -99,10 +99,10 @@ vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+-- vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+-- vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+-- vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+-- vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -159,9 +159,69 @@ require("lazy").setup({
 	--    require('gitsigns').setup({ ... })
 	--
 	-- See `:help gitsigns` to understand what the configuration keys do
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
+	-- Adds git related signs to the gutter, as well as utilities for managing changes
+	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
+			on_attach = function(bufnr)
+				local gitsigns = require("gitsigns")
+
+				-- Utility function to map keys
+				local function map(mode, lhs, rhs, opts)
+					opts = opts or {}
+					opts.buffer = bufnr
+					vim.keymap.set(mode, lhs, rhs, opts)
+				end
+
+				-- Group all hunk-related mappings under <leader>h
+				local h_prefix = "<leader>h"
+
+				-- Navigation
+				map("n", h_prefix .. "n", function()
+					if vim.wo.diff then
+						vim.cmd("normal! ]c")
+					else
+						gitsigns.next_hunk()
+					end
+				end, { desc = "Next hunk" })
+
+				map("n", h_prefix .. "p", function()
+					if vim.wo.diff then
+						vim.cmd("normal! [c")
+					else
+						gitsigns.prev_hunk()
+					end
+				end, { desc = "Previous hunk" })
+
+				-- Actions
+				map("n", h_prefix .. "s", gitsigns.stage_hunk, { desc = "Stage hunk" })
+				map("n", h_prefix .. "r", gitsigns.reset_hunk, { desc = "Reset hunk" })
+				map("v", h_prefix .. "s", function()
+					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, { desc = "Stage selected hunk" })
+				map("v", h_prefix .. "r", function()
+					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+				end, { desc = "Reset selected hunk" })
+				map("n", h_prefix .. "S", gitsigns.stage_buffer, { desc = "Stage buffer" })
+				map("n", h_prefix .. "u", gitsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
+				map("n", h_prefix .. "R", gitsigns.reset_buffer, { desc = "Reset buffer" })
+				map("n", h_prefix .. "P", gitsigns.preview_hunk, { desc = "Preview hunk" })
+				map("n", h_prefix .. "b", function()
+					gitsigns.blame_line()
+				end, { desc = "Blame line" })
+				map("n", h_prefix .. "B", function()
+					gitsigns.blame()
+				end, { desc = "Blame" })
+				map("n", h_prefix .. "t", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
+				map("n", h_prefix .. "d", gitsigns.diffthis, { desc = "Diff this" })
+				map("n", h_prefix .. "D", function()
+					gitsigns.diffthis("~")
+				end, { desc = "Diff this with previous commit" })
+				map("n", h_prefix .. "x", gitsigns.toggle_deleted, { desc = "Toggle deleted" })
+
+				-- Text object
+				map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "Select hunk" })
+			end,
 			signs = {
 				add = { text = "+" },
 				change = { text = "~" },
@@ -194,19 +254,20 @@ require("lazy").setup({
 			require("which-key").setup()
 
 			-- Document existing key chains
-			require("which-key").register({
-				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-				["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
-				["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
+			require("which-key").add({
+				{ "<leader>c", group = "[C]ode" },
+				{ "<leader>d", group = "[D]ocument" },
+				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>w", group = "[W]orkspace" },
+				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>g", group = "Git Search", mode = { "n", "v" } },
 			})
 			-- visual mode
-			require("which-key").register({
-				["<leader>h"] = { "Git [H]unk" },
-			}, { mode = "v" })
+			-- require("which-key").add({
+			-- 	["<leader>h"] = { "Git [H]unk" },
+			-- }, { mode = "v" })
 		end,
 	},
 
@@ -488,6 +549,7 @@ require("lazy").setup({
 				-- gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
+
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -570,14 +632,14 @@ require("lazy").setup({
 				}
 			end,
 			formatters_by_ft = {
-				lua = { "stylua" },
+				lua = { "stylua", "luafmt", stop_after_first = true },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
-				javascript = { { "prettierd", "prettier" } },
-				javascriptreact = { { "prettierd", "prettier" } },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
@@ -655,8 +717,8 @@ require("lazy").setup({
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
-					["<C-n>"] = cmp.mapping.select_next_item(),
-					["<C-p>"] = cmp.mapping.select_prev_item(),
+					["<C-z>"] = cmp.mapping.select_next_item(),
+					["<C-x>"] = cmp.mapping.select_prev_item(),
 
 					-- Manually trigger a completion from nvim-cmp.
 					--  Generally you don't need this, because nvim-cmp will display
@@ -699,23 +761,23 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
-		init = function()
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
-
-			-- You can configure highlights by doing something like:
-			vim.cmd.hi("Comment gui=none")
-		end,
-	},
+	-- { -- You can easily change to a different colorscheme.
+	-- 	-- Change the name of the colorscheme plugin below, and then
+	-- 	-- change the command in the config to whatever the name of that colorscheme is.
+	-- 	--
+	-- 	-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	-- 	"folke/tokyonight.nvim",
+	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
+	-- 	init = function()
+	-- 		-- Load the colorscheme here.
+	-- 		-- Like many other themes, this one has different styles, and you could load
+	-- 		-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+	-- 		vim.cmd.colorscheme("tokyonight-night")
+	--
+	-- 		-- You can configure highlights by doing something like:
+	-- 		vim.cmd.hi("Comment gui=none")
+	-- 	end,
+	-- },
 
 	-- Highlight todo, notes, etc in comments
 	-- {
@@ -819,7 +881,7 @@ require("lazy").setup({
 	require("kickstart.plugins.debug"),
 	require("kickstart.plugins.indent_line"),
 	-- require("kickstart.plugins.lint"),
-	-- require("kickstart.plugins.autopairs"),
+	require("kickstart.plugins.autopairs"),
 	-- require("kickstart.plugins.neo-tree"),
 	-- require("kickstart.plugins.gitsigns"), -- adds gitsigns recommend keymaps
 
