@@ -22,6 +22,8 @@ vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+vim.api.nvim_exec('language en_US')
+
 -- autoformat on :w
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 --   buffer = buffer,
