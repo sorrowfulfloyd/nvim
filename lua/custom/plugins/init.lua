@@ -122,9 +122,5 @@ vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by 
 
 vim.opt.termguicolors = true
 
--- my custom whichkey keymaps
---[[ require('which-key').register {
-  ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' },
-} ]]
 vim.filetype.add({ extension = { templ = "templ" } })
 return {}
