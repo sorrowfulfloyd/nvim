@@ -127,4 +127,6 @@ vim.opt.termguicolors = true
   ['<leader>x'] = { name = 'E[x]plorer', _ = 'which_key_ignore' },
 } ]]
 vim.filetype.add({ extension = { templ = "templ" } })
+
+vim.api.nvim_exec2("language en_US.utf8", {})
 return {}
