@@ -1,16 +1,16 @@
--- return {
--- 	"rebelot/kanagawa.nvim",
--- 	lazy = false,
--- 	priority = 1000,
--- 	config = function()
--- 		require("kanagawa").setup({
--- 			background = {
--- 				dark = "dragon",
--- 			},
--- 		})
--- 		vim.cmd.colorscheme("kanagawa-dragon")
--- 	end,
--- }
+return {
+	"rebelot/kanagawa.nvim",
+	lazy = false,
+	priority = 1000,
+	config = function()
+		require("kanagawa").setup({
+			background = {
+				dark = "dragon",
+			},
+		})
+		vim.cmd.colorscheme("kanagawa-dragon")
+	end,
+}
 
 -- return {
 -- 	"EdenEast/nightfox.nvim",
@@ -40,14 +40,23 @@
 -- }
 --
 
-return {
-	"rose-pine/neovim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		vim.cmd.colorscheme("rose-pine")
-	end,
-}
+-- return {
+-- 	"rose-pine/neovim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		vim.cmd.colorscheme("rose-pine")
+-- 	end,
+-- }
+
+-- return {
+-- 	"ramojus/mellifluous.nvim",
+-- 	lazy = false,
+-- 	priority = 1000,
+-- 	config = function()
+-- 		vim.cmd.colorscheme("mellifluous")
+-- 	end,
+-- }
 
 -- return {
 -- 	"slugbyte/lackluster.nvim",
