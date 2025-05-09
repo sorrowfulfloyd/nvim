@@ -23,12 +23,12 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 -- autoformat on :w
-vim.api.nvim_create_autocmd("BufWritePre", {
-  buffer = buffer,
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   buffer = buffer,
+--   callback = function()
+--     vim.lsp.buf.format({ async = false })
+--   end,
+-- })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -128,25 +128,25 @@ vim.opt.termguicolors = true
 } ]]
 vim.filetype.add({ extension = { templ = "templ" } })
 
-vim.opt.textwidth = 80
-vim.opt.colorcolumn = "90" -- reference line
+vim.opt.textwidth = 100
+vim.opt.colorcolumn = "100" -- reference line
 
 -- autoformatting for markdown files
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "markdown",
-  callback = function()
-    vim.opt_local.formatoptions = "jcroqlnt"
-    vim.opt_local.textwidth = 90
-  end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "markdown",
+--   callback = function()
+--     vim.opt_local.formatoptions = "jcroqlnt"
+--     vim.opt_local.textwidth = 90
+--   end,
+-- })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.md",
-  callback = function()
-    -- Format the whole buffer using internal formatter
-    vim.cmd("silent! normal! gggqG")
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = "*.md",
+--   callback = function()
+--     -- Format the whole buffer using internal formatter
+--     vim.cmd("silent! normal! gggqG")
+--   end,
+-- })
 
 return {}
